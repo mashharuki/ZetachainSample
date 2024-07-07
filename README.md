@@ -48,6 +48,14 @@ Zetachain を学習するためのサンプルリポジトリです。
   npx hardhat account --save
   ```
 
+  作成したアドレス
+
+  ```bash
+  😃 EVM address: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  😃 Bitcoin address: tb1qu9tgjwu33mmxpruj6t766s8fjapr5cjl4tvlt5
+  😃 Bech32 address: zeta1wz8mju444aw20n4vdtq66tutfzlvzur8fxfj3m
+  ```
+
 - Zetachain ファウセットを取得する。
 
   ```bash
@@ -60,16 +68,60 @@ Zetachain を学習するためのサンプルリポジトリです。
   npx hardhat balances
   ```
 
+  ```bash
+  EVM: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  Bitcoin: tb1qu9tgjwu33mmxpruj6t766s8fjapr5cjl4tvlt5
+
+  ┌─────────┬───────────────────┬───────────────────────────────────┬─────────┬────────────┐
+  │ (index) │ Chain             │ Token                             │ Type    │ Amount     │
+  ├─────────┼───────────────────┼───────────────────────────────────┼─────────┼────────────┤
+  │ 0       │ 'amoy_testnet'    │ 'MATIC.AMOY'                      │ 'Gas'   │ 'NaN'      │
+  │ 1       │ 'bsc_testnet'     │ 'USDC'                            │ 'ERC20' │ '0.000000' │
+  │ 2       │ 'bsc_testnet'     │ 'tBNB'                            │ 'Gas'   │ '0.000000' │
+  │ 3       │ 'bsc_testnet'     │ 'WZETA'                           │ 'ERC20' │ '0.000000' │
+  │ 4       │ 'btc_testnet'     │ 'tBTC'                            │ 'Gas'   │ '0.000000' │
+  │ 5       │ 'sepolia_testnet' │ 'sETH.SEPOLIA'                    │ 'Gas'   │ '0.000000' │
+  │ 6       │ 'sepolia_testnet' │ 'USDC.SEPOLIA'                    │ 'ERC20' │ '0.000000' │
+  │ 7       │ 'sepolia_testnet' │ 'WZETA'                           │ 'ERC20' │ '0.000000' │
+  │ 8       │ 'zeta_testnet'    │ 'sETH.SEPOLIA'                    │ 'ZRC20' │ '0.000000' │
+  │ 9       │ 'zeta_testnet'    │ 'USDC-goerli_testnet'             │ 'ZRC20' │ '0.000000' │
+  │ 10      │ 'zeta_testnet'    │ 'gETH'                            │ 'ZRC20' │ '0.000000' │
+  │ 11      │ 'zeta_testnet'    │ 'tMATIC'                          │ 'ZRC20' │ '0.000000' │
+  │ 12      │ 'zeta_testnet'    │ 'tBTC'                            │ 'ZRC20' │ '0.000000' │
+  │ 13      │ 'zeta_testnet'    │ 'MATIC.AMOY'                      │ 'ZRC20' │ '0.000000' │
+  │ 14      │ 'zeta_testnet'    │ 'USDC-bsc_testnet'                │ 'ZRC20' │ '0.000000' │
+  │ 15      │ 'zeta_testnet'    │ 'USDC-mumbai_testnet'             │ 'ZRC20' │ '0.000000' │
+  │ 16      │ 'zeta_testnet'    │ 'ZetaChain ZRC20 USDC on SEPOLIA' │ 'ZRC20' │ '0.000000' │
+  │ 17      │ 'zeta_testnet'    │ 'tBNB'                            │ 'ZRC20' │ '0.000000' │
+  │ 18      │ 'zeta_testnet'    │ 'WZETA'                           │ 'ERC20' │ '0.000000' │
+  │ 19      │ 'zeta_testnet'    │ 'ZETA'                            │ 'Gas'   │ '0.000000' │
+  └─────────┴───────────────────┴───────────────────────────────────┴─────────┴────────────┘
+  ```
+
+- コンパイル
+
+  ```bash
+  npx hardhat compile
+  ```
+
 - テストネットへデプロイ
 
   ```bash
   npx hardhat deploy --network zeta_testnet
   ```
 
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  🚀 Successfully deployed contract on zeta_testnet.
+  📜 Contract address: 0x82F26Ce25D4B28fF6DeEE4eF90bA3c8567c900Ed
+  🌍 ZetaScan: https://athens.explorer.zetachain.com/address/0x82F26Ce25D4B28fF6DeEE4eF90bA3c8567c900Ed
+  🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0x82F26Ce25D4B28fF6DeEE4eF90bA3c8567c900Ed
+  ```
+
 - sepolia テストネットから zetachain のテストネットへ送金する
 
   ```bash
-  npx hardhat interact --contract 0xE26F2e102E2f3267777F288389435d3037D14bb3 --amount 0.1 --network sepolia_testnet
+  npx hardhat interact --contract  0x82F26Ce25D4B28fF6DeEE4eF90bA3c8567c900Ed --amount 0.01 --network sepolia_testnet
   ```
 
 ### 参考文献
@@ -81,3 +133,6 @@ Zetachain を学習するためのサンプルリポジトリです。
 5. [zContract のインターフェース](https://github.com/zeta-chain/protocol-contracts/blob/main/contracts/zevm/interfaces/zContract.sol)
 6. [SystemContract の情報](https://www.zetachain.com/docs/developers/evm/system-contract/)
 7. [テストネットファウセット](https://www.zetachain.com/docs/reference/apps/get-testnet-zeta/)
+8. [Zetachain プロジェクトで使える CLI コマンドテンプレ集](https://www.zetachain.com/docs/developers/reference/template/)
+9. [Contract アドレス集](https://www.zetachain.com/docs/reference/network/contracts/)
+10. [API/RPC endpoints](https://www.zetachain.com/docs/reference/network/api/)

@@ -42,6 +42,12 @@ Zetachain を学習するためのサンプルリポジトリです。
   npx hardhat omnichain MyContract
   ```
 
+  Swap 用のテンプレートコントラクトを生成するには以下のコマンドを生成
+
+  ```bash
+  npx hardhat omnichain Swap targetToken:address recipient
+  ```
+
 - ウォレットアドレスを作成
 
   ```bash
@@ -120,8 +126,62 @@ Zetachain を学習するためのサンプルリポジトリです。
 
 - sepolia テストネットから zetachain のテストネットへ送金する
 
+  事前に`0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067`に Sepolia ETH を送金しておく必要あり
+
   ```bash
-  npx hardhat interact --contract  0x82F26Ce25D4B28fF6DeEE4eF90bA3c8567c900Ed --amount 0.01 --network sepolia_testnet
+  npx hardhat interact --contract 0x82F26Ce25D4B28fF6DeEE4eF90bA3c8567c900Ed --amount 0.01 --network sepolia_testnet
+  ```
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+
+      🚀 Successfully broadcasted a token transfer transaction on sepolia_testnet network.
+      📝 Transaction hash: 0x8ff9cc6be40254a7ba13326b899fb8d31c2ada22ebc5d3692c6e19658faad3c5
+  ```
+
+  トランザクションを確認する
+
+  ```bash
+  npx hardhat cctx 0x8ff9cc6be40254a7ba13326b899fb8d31c2ada22ebc5d3692c6e19658faad3c5
+
+  ✓ CCTXs on ZetaChain found.
+
+  ✓ 0xedde81be8a7e234e77bf0b8a49738b07019224f3484a5f4ddff34994bedff0b8: 11155111 → 7001: OutboundMined (Remote omnichain contract call completed)
+  ```
+
+- Swap のコントラクトのデプロイ記録
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+
+  🚀 Successfully deployed contract on zeta_testnet.
+  📜 Contract address: 0x2B769C1A6Be728E1edC3D9269b5689E4973Dd537
+  🌍 ZetaScan: https://athens.explorer.zetachain.com/address/0x2B769C1A6Be728E1edC3D9269b5689E4973Dd537
+  🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0x2B769C1A6Be728E1edC3D9269b5689E4973Dd537
+  ```
+
+- Swap を行うコマンド
+
+  Sepolia から Amoy への swap
+
+  ```bash
+  npx hardhat interact --contract 0x2B769C1A6Be728E1edC3D9269b5689E4973Dd537 --amount 0.03 --network sepolia_testnet --target-token 0x777915D031d1e8144c90D025C594b3b8Bf07a08d --recipient 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  ```
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+
+  🚀 Successfully broadcasted a token transfer transaction on sepolia_testnet network.
+  📝 Transaction hash: 0x81d05c9c0098eff783ef62ea5eb5cab6672728f68aff0619bd2904c4ef8c171b
+  ```
+
+  ```bash
+  npx hardhat cctx 0x81d05c9c0098eff783ef62ea5eb5cab6672728f68aff0619bd2904c4ef8c171b
+
+  ✓ CCTXs on ZetaChain found.
+
+  ✓ 0xd6e32634ef5910cd5986d4857ddc3a0441fcfceee431e5e54017fb07741332de: 11155111 → 7001: OutboundMined (Remote omnichain contract call completed)
+  ✓ 0x1ad600765698f51e1d2bba2fde1f143572f7b4743a864902bdfc5f8eedb9ab81: 7001 → 80002: PendingOutbound (ZRC20 withdrawal event setting to pending outbound directly) → OutboundMined (ZRC20 withdrawal event setting to pending outbound directly : Outbound succeeded, mined)
   ```
 
 ### 参考文献
@@ -136,3 +196,12 @@ Zetachain を学習するためのサンプルリポジトリです。
 8. [Zetachain プロジェクトで使える CLI コマンドテンプレ集](https://www.zetachain.com/docs/developers/reference/template/)
 9. [Contract アドレス集](https://www.zetachain.com/docs/reference/network/contracts/)
 10. [API/RPC endpoints](https://www.zetachain.com/docs/reference/network/api/)
+11. [ファウセットサイト 2](https://faucet.triangleplatform.com/zetachain/athens3)
+
+```
+
+```
+
+```
+
+```

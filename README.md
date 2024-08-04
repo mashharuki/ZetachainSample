@@ -304,6 +304,49 @@ Zetachain を学習するためのサンプルリポジトリです。
   🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0xa7f029596460f4bB7C263979e2464b912880Bb47
   ```
 
+- クロスチェーン NFT を発行する時の操作
+
+  `nft`ディレクトリで実行する。
+
+  デプロイするコマンド
+
+  ```bash
+  npx hardhat deploy --network zeta_testnet
+  ```
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  🚀 Successfully deployed contract on zeta_testnet.
+  📜 Contract address: 0x1Fe904cFEdF8D61Bcaf77c2a728704A26ad74f47
+  🌍 ZetaScan: https://athens.explorer.zetachain.com/address/0x1Fe904cFEdF8D61Bcaf77c2a728704A26ad74f47
+  🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0x1Fe904cFEdF8D61Bcaf77c2a728704A26ad74f47
+  ```
+
+  サブグラフをデプロイ
+
+  ```bash
+  goldsky login
+  goldsky subgraph deploy nft/v1 --from-abi goldsky.json
+  ```
+
+  こうすることでサブグラフがデプロイされる。
+
+  [Public SubGraph](https://api.goldsky.com/api/public/project_clzfkgto0x60v01wi16os4gyx/subgraphs/nft-zetachain-testnet/v1/gn)
+
+  NFT をデプロイするコマンド
+
+  ```bash
+  npx hardhat interact --contract 0x1Fe904cFEdF8D61Bcaf77c2a728704A26ad74f47 --amount 0.01 --network sepolia_testnet --recipient 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  ```
+
+  以下が NFT を発行した時の記録
+
+  [0x7e6b2b9e2d9feb2ee0c6a70debb1fe572cf046891ad4da31dc97206b17a24b35](https://sepolia.etherscan.io/tx/0x7e6b2b9e2d9feb2ee0c6a70debb1fe572cf046891ad4da31dc97206b17a24b35)
+
+  クロスチェーントランザクション
+
+  [ZetaScan - 0x40385d9e7f6bbf4310dd6c1de684915399d3f57e4de8cb22ba16d9c1963d9f99](https://athens.explorer.zetachain.com/cc/tx/0x40385d9e7f6bbf4310dd6c1de684915399d3f57e4de8cb22ba16d9c1963d9f99)
+
 ### 参考文献
 
 1. [開発者むけドキュメント](https://www.zetachain.com/developers)
@@ -317,3 +360,4 @@ Zetachain を学習するためのサンプルリポジトリです。
 9. [Contract アドレス集](https://www.zetachain.com/docs/reference/network/contracts/)
 10. [API/RPC endpoints](https://www.zetachain.com/docs/reference/network/api/)
 11. [ファウセットサイト 2](https://faucet.triangleplatform.com/zetachain/athens3)
+12. [Goldsky Dashboard](https://app.goldsky.com/dashboard)

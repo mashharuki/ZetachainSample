@@ -206,11 +206,103 @@ Zetachain を学習するためのサンプルリポジトリです。
     npx hardhat interact --contract 0x1767A93A96D339EeC8E0325D94B5d3E4454d542f --network bsc_testnet --amount 0.01 --input-token 0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891 --target-token 0xcC683A782f4B30c138787CB5576a86AF66fdc31d --recipient 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072 --withdraw false
     ```
 
+    ```bash
+    Transaction hash: 0x1248de9227a4c411cf1fedbe65fc61542412502af0747500b984d859928a0426
+    ```
+
+    ```bash
+    npx hardhat cctx 0x1248de9227a4c411cf1fedbe65fc61542412502af0747500b984d859928a0426
+    ```
+
   - Swap Tokens With Withdrawing
 
     ```bash
     npx hardhat interact --contract 0x1767A93A96D339EeC8E0325D94B5d3E4454d542f --network bsc_testnet --amount 0.1 --input-token 0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891 --target-token 0xcC683A782f4B30c138787CB5576a86AF66fdc31d --recipient 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072  --withdraw true
     ```
+
+- Staking Contract をデプロイする。
+
+  `staking`ディレクリで実行すること。
+
+  ```bash
+  npx hardhat deploy --chain btc_testnet --network zeta_testnet
+  ```
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  🚀 Successfully deployed contract on zeta_testnet.
+  📜 Contract address: 0x92810274196d79e9E7FBAC8207509B637b2E6c07
+  🌍 ZetaScan: https://athens.explorer.zetachain.com/address/0x92810274196d79e9E7FBAC8207509B637b2E6c07
+  🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0x92810274196d79e9E7FBAC8207509B637b2E6c07
+  ```
+
+  chain の部分を変えることで Stake 先を変えられる。
+
+  ```bash
+  npx hardhat deploy --network zeta_testnet --chain sepolia_testnet
+  ```
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  🚀 Successfully deployed contract on zeta_testnet.
+  📜 Contract address: 0x66291B7264524e564BA0e99B97997F72cd2696a7
+  🌍 ZetaScan: https://athens.explorer.zetachain.com/address/0x66291B7264524e564BA0e99B97997F72cd2696a7
+  🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0x66291B7264524e564BA0e99B97997F72cd2696a7
+  ```
+
+  stake する。
+
+  ```bash
+  npx hardhat stake --amount 0.1 --beneficiary 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072 --contract 0x66291B7264524e564BA0e99B97997F72cd2696a7 --network sepolia_testnet
+  ```
+
+  Stake した記録は EtherScan 上から確認が可能
+
+  [0x727307eeaa653cac6d2d241cc50fec57e2c9bfc87af960d94e0730cd00df3e3c](https://sepolia.etherscan.io/tx/0x727307eeaa653cac6d2d241cc50fec57e2c9bfc87af960d94e0730cd00df3e3c)
+
+  update-beneficiary するコマンド
+
+  ```bash
+  npx hardhat update-beneficiary --contract 0x66291B7264524e564BA0e99B97997F72cd2696a7 --beneficiary 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072 --network sepolia_testnet
+  ```
+
+  update-beneficiary した時の記録は EtherScan から確認が可能
+
+  [0x9c972a6c4a053244c4ed0ad066eec3647850ded9917f11bde229138a7d1cf6c6](https://sepolia.etherscan.io/tx/0x9c972a6c4a053244c4ed0ad066eec3647850ded9917f11bde229138a7d1cf6c6)
+
+  claim するコマンド
+
+  ```bash
+  npx hardhat claim --contract 0x66291B7264524e564BA0e99B97997F72cd2696a7 --staker 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072 --network sepolia_testnet
+  ```
+
+  claim した時の記録
+
+  [0x472b00d2ee57aef80a956091fab20afd2fb5abf144a0d6508e3d54a69b4dcff6](https://sepolia.etherscan.io/tx/0x472b00d2ee57aef80a956091fab20afd2fb5abf144a0d6508e3d54a69b4dcff6)
+
+  unstake するコマンド
+
+  ```bash
+  npx hardhat unstake --contract 0x66291B7264524e564BA0e99B97997F72cd2696a7 --network sepolia_testnet
+  ```
+
+  unstake した時の記録
+
+  [0x9c972a6c4a053244c4ed0ad066eec3647850ded9917f11bde229138a7d1cf6c6](https://sepolia.etherscan.io/tx/0x9c972a6c4a053244c4ed0ad066eec3647850ded9917f11bde229138a7d1cf6c6)
+
+  Polygon Amoy 用にもデプロイできる。
+
+  ```bash
+  npx hardhat deploy --network zeta_testnet --chain amoy_testnet
+  ```
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  🚀 Successfully deployed contract on zeta_testnet.
+  📜 Contract address: 0xa7f029596460f4bB7C263979e2464b912880Bb47
+  🌍 ZetaScan: https://athens.explorer.zetachain.com/address/0xa7f029596460f4bB7C263979e2464b912880Bb47
+  🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0xa7f029596460f4bB7C263979e2464b912880Bb47
+  ```
 
 ### 参考文献
 

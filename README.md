@@ -209,7 +209,7 @@ Zetachain を学習するためのサンプルリポジトリです。
   - Swap Tokens With Withdrawing
 
     ```bash
-    npx hardhat interact --contract 0x1767A93A96D339EeC8E0325D94B5d3E4454d542f --network bsc_testnet --amount 0.1 --target-token 0xcC683A782f4B30c138787CB5576a86AF66fdc31d --recipient 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072
+    npx hardhat interact --contract 0x1767A93A96D339EeC8E0325D94B5d3E4454d542f --network bsc_testnet --amount 0.1 --input-token 0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891 --target-token 0xcC683A782f4B30c138787CB5576a86AF66fdc31d --recipient 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072  --withdraw true
     ```
 
 ### 参考文献

@@ -1,102 +1,57 @@
-import { parseUnits } from "@ethersproject/units";
-import ERC20 from "@openzeppelin/contracts/build/contracts/ERC20.json";
-import { getAddress } from "@zetachain/protocol-contracts";
-import ERC20Custody from "@zetachain/protocol-contracts/abi/evm/ERC20Custody.sol/ERC20Custody.json";
-import { prepareData, ZetaChainClient } from "@zetachain/toolkit/client";
-import bech32 from "bech32";
-import { ethers, utils } from "ethers";
+import { parseEther } from "@ethersproject/units";
+import { ethers } from "ethers";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
-  
+  // get signer
   const [signer] = await hre.ethers.getSigners();
-  const client = new ZetaChainClient({ network: "testnet", signer });
 
-  let recipient;
-  try {
-    if (bech32.decode(args.recipient)) {
-      recipient = utils.solidityPack(["bytes"], [utils.toUtf8Bytes(args.recipient)]);
-    }
-  } catch (e) {
-    recipient = args.recipient;
+  /*
+  if (!/zeta_(testnet|mainnet)/.test(hre.network.name)) {
+    throw new Error('🚨 Please use either "zeta_testnet" or "zeta_mainnet".');
   }
+  */
 
-  const data = prepareData(
-    args.contract,
-    ["address", "string", ],
-    [args.targetToken, args.recipient, ]
+  // SwapToAnyToken コントラクトインスタンスを生成
+  const factory = await hre.ethers.getContractFactory("SwapToAnyToken");
+  const contract = factory.attach(args.contract);
+  // 引数の値を取得する
+  const amount = parseEther(args.amount);
+  const inputToken = args.inputToken;
+  const targetToken = args.targetToken;
+  const recipient = ethers.utils.arrayify(args.recipient);
+  const withdraw = JSON.parse(args.withdraw);
+  // ERC20規格トークンのコントラクトインスタンスを生成
+  const erc20Factory = await hre.ethers.getContractFactory("ERC20");
+  const inputTokenContract = erc20Factory.attach(args.inputToken);
+  // approve
+  const approval = await inputTokenContract.approve(args.contract, amount);
+  await approval.wait();
+  // swapメソッドを実行
+  const tx = await contract.swap(
+    inputToken,
+    amount,
+    targetToken,
+    recipient,
+    withdraw
   );
 
-  let decimals = 18;
+  ////////////////////////////////////////////////////////////////////////
+  // アイディア ここにintentの仕組みを混ぜられないか？？
+  // まずはメタトランザクションでも良いと思う。
+  ////////////////////////////////////////////////////////////////////////
 
-  if (args.erc20) {
-    const contract = new ethers.Contract(args.erc20, ERC20.abi, signer);
-    decimals = await contract.decimals();
-  }
-
-  const value = ethers.utils.parseUnits(args.amount, decimals);
-
-  let inputToken = args.erc20
-    ? await client.getZRC20FromERC20(args.erc20)
-    : await client.getZRC20GasToken(hre.network.name);
-
-  const refundFee = await client.getRefundFee(inputToken);
-  const refundFeeAmount = ethers.utils.formatUnits(
-    refundFee.amount,
-    refundFee.decimals
-  );
-  
-  if (value.lt(refundFee.amount)) {
-    throw new Error(
-      `Amount ${args.amount} is less than refund fee ${refundFeeAmount}. This means if this transaction fails, you will not be able to get the refund of deposited tokens. Consider increasing the amount.`
-    );
-  }
-
-  let tx;
-
-  if (args.erc20) {
-    const custodyAddress = getAddress("erc20Custody", hre.network.name as any);
-    if (!custodyAddress) {
-      throw new Error(
-        `No ERC20 Custody contract found for ${hre.network.name} network`
-      );
-    }
-
-    const custodyContract = new ethers.Contract(
-      custodyAddress,
-      ERC20Custody.abi,
-      signer
-    );
-    const tokenContract = new ethers.Contract(args.erc20, ERC20.abi, signer);
-    const decimals = await tokenContract.decimals();
-    const value = parseUnits(args.amount, decimals);
-    const approve = await tokenContract.approve(custodyAddress, value);
-    await approve.wait();
-
-    tx = await custodyContract.deposit(signer.address, args.erc20, value, data);
-    tx.wait();
-  } else {
-    const value = parseUnits(args.amount, 18);
-    const to = getAddress("tss", hre.network.name as any);
-    tx = await signer.sendTransaction({ data, to, value });
-  }
-
-  if (args.json) {
-    console.log(JSON.stringify(tx, null, 2));
-  } else {
-    console.log(`🔑 Using account: ${signer.address}\n`);
-
-    console.log(`🚀 Successfully broadcasted a token transfer transaction on ${hre.network.name} network.
-📝 Transaction hash: ${tx.hash}
-  `);
-  }
+  await tx.wait();
+  console.log(`Transaction hash: ${tx.hash}`);
 };
 
-task("interact", "Interact with the contract", main)
-  .addParam("contract", "The address of a universal app contract on ZetaChain")
-  .addParam("amount", "Amount of tokens to send")
-  .addOptionalParam("erc20", "Send an ERC-20 token")
-  .addFlag("json", "Output in JSON")
-  .addParam("targetToken")
-  .addParam("recipient")
+// swap タスク定義
+task("interact", "Interact with the Swap contract from ZetaChain", main)
+  .addFlag("json", "Output JSON")
+  .addParam("contract", "Contract address")
+  .addParam("amount", "Token amount to send")
+  .addParam("inputToken", "Input token address")
+  .addParam("targetToken", "Target token address")
+  .addParam("recipient", "Recipient address")
+  .addParam("withdraw", "Withdraw flag (true/false)")

@@ -124,6 +124,20 @@ Zetachain を学習するためのサンプルリポジトリです。
   🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0x82F26Ce25D4B28fF6DeEE4eF90bA3c8567c900Ed
   ```
 
+- コントラクト名を指定した場合
+
+  ```bash
+  npx hardhat deploy --name SwapToAnyToken --network zeta_testnet
+  ```
+
+  ```bash
+  🔑 Using account: 0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067
+  🚀 Successfully deployed contract on zeta_testnet.
+  📜 Contract address: 0x96B7F8B76d74BFdC334F85dDBFfcea24f7592207
+  🌍 ZetaScan: https://athens.explorer.zetachain.com/address/0x96B7F8B76d74BFdC334F85dDBFfcea24f7592207
+  🌍 Blockcsout: https://zetachain-athens-3.blockscout.com/address/0x96B7F8B76d74BFdC334F85dDBFfcea24f7592207
+  ```
+
 - sepolia テストネットから zetachain のテストネットへ送金する
 
   事前に`0x708fb972b5aF5ca7CeAc6ac1ad2f8b48BEC17067`に Sepolia ETH を送金しておく必要あり
@@ -184,6 +198,20 @@ Zetachain を学習するためのサンプルリポジトリです。
   ✓ 0x1ad600765698f51e1d2bba2fde1f143572f7b4743a864902bdfc5f8eedb9ab81: 7001 → 80002: PendingOutbound (ZRC20 withdrawal event setting to pending outbound directly) → OutboundMined (ZRC20 withdrawal event setting to pending outbound directly : Outbound succeeded, mined)
   ```
 
+- チェーン間で任意のトークンを Swap する。
+
+  - Swap Tokens Without Withdrawing
+
+    ```bash
+    npx hardhat interact --contract 0x1767A93A96D339EeC8E0325D94B5d3E4454d542f --network bsc_testnet --amount 0.01 --input-token 0xd97B1de3619ed2c6BEb3860147E30cA8A7dC9891 --target-token 0xcC683A782f4B30c138787CB5576a86AF66fdc31d --recipient 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072 --withdraw false
+    ```
+
+  - Swap Tokens With Withdrawing
+
+    ```bash
+    npx hardhat interact --contract 0x1767A93A96D339EeC8E0325D94B5d3E4454d542f --network bsc_testnet --amount 0.1 --target-token 0xcC683A782f4B30c138787CB5576a86AF66fdc31d --recipient 0x51908F598A5e0d8F1A3bAbFa6DF76F9704daD072
+    ```
+
 ### 参考文献
 
 1. [開発者むけドキュメント](https://www.zetachain.com/developers)
@@ -197,11 +225,3 @@ Zetachain を学習するためのサンプルリポジトリです。
 9. [Contract アドレス集](https://www.zetachain.com/docs/reference/network/contracts/)
 10. [API/RPC endpoints](https://www.zetachain.com/docs/reference/network/api/)
 11. [ファウセットサイト 2](https://faucet.triangleplatform.com/zetachain/athens3)
-
-```
-
-```
-
-```
-
-```

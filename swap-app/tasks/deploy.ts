@@ -31,13 +31,13 @@ const main = async (args: any, hre: HardhatRuntimeEnvironment) => {
   if (args.json) {
     console.log(JSON.stringify(contract));
   } else {
-    console.log(`🔑 Using account: ${signer.address}
-
-🚀 Successfully deployed contract on ${network}.
-📜 Contract address: ${contract.address}
-🌍 ZetaScan: https://${zetascan}.zetachain.com/address/${contract.address}
-🌍 Blockcsout: https://${blockscout}.blockscout.com/address/${contract.address}
-`);
+    console.log(`
+      🔑 Using account: ${signer.address}
+      🚀 Successfully deployed contract on ${network}.
+      📜 Contract address: ${contract.address}
+      🌍 ZetaScan: https://${zetascan}.zetachain.com/address/${contract.address}
+      🌍 Blockcsout: https://${blockscout}.blockscout.com/address/${contract.address}
+    `);
   }
 };
 
